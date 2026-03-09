@@ -26,9 +26,10 @@ export default function Home() {
   }, [])
 
   async function fetchChildren() {
+    // ✅ children bez typového argumentu
     const { data: childrenData, error: childrenError } = await supabase
-    .from("children")
-    .select("*")
+      .from("children")
+      .select("*") as { data: Child[] | null; error: any }
 
     if (childrenError) {
       console.log(childrenError)
@@ -37,10 +38,10 @@ export default function Home() {
 
     setChildren(childrenData || [])
 
-    // načteme transakce a spočítáme coin balance
+    // ✅ transactions bez typového argumentu
     const { data: txData, error: txError } = await supabase
-      .from<Transaction>("transactions")
-      .select("*")
+      .from("transactions")
+      .select("*") as { data: Transaction[] | null; error: any }
 
     if (txError) {
       console.log(txError)
@@ -58,7 +59,7 @@ export default function Home() {
 
   async function addCoins(childId: number, type: string, coins: number) {
     const { error } = await supabase
-      .from<Transaction>("transactions")
+      .from("transactions")
       .insert([{ child_id: childId, type, coins }])
 
     if (error) console.log(error)
@@ -70,8 +71,8 @@ export default function Home() {
       <h1 style={{ fontSize: 28, fontWeight: "bold", marginBottom: 20 }}>Flowcoin Dashboard</h1>
 
       {[...children]
-  .sort((a, b) => (balances[b.id] || 0) - (balances[a.id] || 0))
-  .map((child, index) => (
+        .sort((a, b) => (balances[b.id] || 0) - (balances[a.id] || 0))
+        .map((child, index) => (
         <div key={child.id} style={{
           padding: 15,
           border: "1px solid #ddd",
@@ -83,43 +84,41 @@ export default function Home() {
         }}>
           <span>#{index + 1} {child.name} - 💰 {balances[child.id] || 0}</span>
           <div style={{ display: "flex", gap: 10 }}>
-            <button  onClick={() => addCoins(child.id, "attendance", 5)}
-  style={{
-    padding: "5px 10px",
-    backgroundColor: "#4ade80", // zelená
-    color: "white",
-    border: "none",
-    borderRadius: 5,
-    cursor: "pointer"
-  }}
->
-  +5 účast</button>
-            <button  onClick={() => addCoins(child.id, "attendance", 3)}
-  style={{
-    padding: "5px 10px",
-    backgroundColor: "#4ade80", // zelená
-    color: "white",
-    border: "none",
-    borderRadius: 5,
-    cursor: "pointer"
-  }}
->
-  +3 pomoc</button>
-            <button  onClick={() => addCoins(child.id, "attendance", 10)}
-  style={{
-    padding: "5px 10px",
-    backgroundColor: "#4ade80", // zelená
-    color: "white",
-    border: "none",
-    borderRadius: 5,
-    cursor: "pointer"
-  }}
->
-  +10 výzva</button>
+            <button onClick={() => addCoins(child.id, "attendance", 5)}
+              style={{
+                padding: "5px 10px",
+                backgroundColor: "#4ade80",
+                color: "white",
+                border: "none",
+                borderRadius: 5,
+                cursor: "pointer"
+              }}
+            >+5 účast</button>
+
+            <button onClick={() => addCoins(child.id, "help", 3)}
+              style={{
+                padding: "5px 10px",
+                backgroundColor: "#60a5fa",
+                color: "white",
+                border: "none",
+                borderRadius: 5,
+                cursor: "pointer"
+              }}
+            >+3 pomoc</button>
+
+            <button onClick={() => addCoins(child.id, "challenge", 10)}
+              style={{
+                padding: "5px 10px",
+                backgroundColor: "#facc15",
+                color: "white",
+                border: "none",
+                borderRadius: 5,
+                cursor: "pointer"
+              }}
+            >+10 výzva</button>
           </div>
         </div>
       ))}
-
     </div>
   )
 }
