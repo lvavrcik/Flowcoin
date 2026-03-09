@@ -27,8 +27,8 @@ export default function Home() {
 
   async function fetchChildren() {
     const { data: childrenData, error: childrenError } = await supabase
-      .from<Child>("children")
-      .select("*")
+    .from("children")
+    .select("*")
 
     if (childrenError) {
       console.log(childrenError)
