@@ -26,34 +26,34 @@ export default function Home() {
   }, [])
 
   async function fetchChildren() {
-    // ✅ children bez typového argumentu
+    // načteme děti
     const { data: childrenData, error: childrenError } = await supabase
       .from("children")
-      .select("*") as { data: Child[] | null; error: any }
-
+      .select("*")
+  
     if (childrenError) {
       console.log(childrenError)
       return
     }
-
+  
     setChildren(childrenData || [])
-
-    // ✅ transactions bez typového argumentu
+  
+    // načteme transakce
     const { data: txData, error: txError } = await supabase
       .from("transactions")
-      .select("*") as { data: Transaction[] | null; error: any }
-
+      .select("*")
+  
     if (txError) {
       console.log(txError)
       return
     }
-
+  
     const newBalances: Record<number, number> = {}
-    txData?.forEach(tx => {
+    txData?.forEach((tx: any) => {
       if (!newBalances[tx.child_id]) newBalances[tx.child_id] = 0
       newBalances[tx.child_id] += tx.coins
     })
-
+  
     setBalances(newBalances)
   }
 
