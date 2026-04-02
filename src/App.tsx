@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { Home, Layers, ShoppingBag, Trophy, User } from 'lucide-react';
+import { Home, ShoppingBag, Trophy } from 'lucide-react';
 
 import { SplashLogin } from './pages/SplashLogin';
 import { Dashboard } from './pages/Dashboard';
@@ -18,13 +18,9 @@ const BottomNav = () => {
 
   return (
     <nav className="bottom-nav">
-      <Link to="/dashboard" className={`nav-item ${path === '/dashboard' ? 'active' : ''}`}>
+      <Link to="/dashboard" className={`nav-item ${path === '/dashboard' || path.includes('/courses') ? 'active' : ''}`}>
         <Home size={24} />
         <span>Home</span>
-      </Link>
-      <Link to="/courses" className={`nav-item ${path.includes('/courses') ? 'active' : ''}`}>
-        <Layers size={24} />
-        <span>Courses</span>
       </Link>
       <Link to="/shop" className={`nav-item ${path.includes('/shop') ? 'active' : ''}`}>
         <ShoppingBag size={24} />
@@ -33,10 +29,6 @@ const BottomNav = () => {
       <Link to="/scoreboard" className={`nav-item ${path.includes('/scoreboard') ? 'active' : ''}`}>
         <Trophy size={24} />
         <span>Scores</span>
-      </Link>
-      <Link to="/profile" className={`nav-item ${path.includes('/profile') ? 'active' : ''}`}>
-        <User size={24} />
-        <span>Profile</span>
       </Link>
     </nav>
   );
@@ -51,11 +43,9 @@ function App() {
         <Routes>
           <Route path="/" element={user ? <Dashboard /> : <SplashLogin />} />
           <Route path="/dashboard" element={user ? <Dashboard /> : <SplashLogin />} />
-          <Route path="/courses" element={user ? <Dashboard /> : <SplashLogin />} />
           <Route path="/courses/:id" element={user ? <CourseDetail /> : <SplashLogin />} />
           <Route path="/shop" element={user ? <Shop /> : <SplashLogin />} />
           <Route path="/scoreboard" element={user ? <Scoreboard /> : <SplashLogin />} />
-          <Route path="/profile" element={user ? <Dashboard /> : <SplashLogin />} />
         </Routes>
         <BottomNav />
       </div>
