@@ -21,7 +21,7 @@ export function SplashLogin() {
     let authError = null;
 
     if (isKidMode) {
-      if (!pin || pin.length < 4) {
+      if (!pin || pin.length < 5) {
         setError('Please enter your full PIN');
         setIsSubmitLoading(false);
         return;
@@ -136,14 +136,14 @@ export function SplashLogin() {
           <>
             <div className="input-group">
               <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <Lock size={16} /> Vlož svůj 4-místný pin
+                <Lock size={16} /> Vlož svůj 5-místný pin
               </label>
               <input 
                 type="password" 
-                maxLength={6}
+                maxLength={5}
                 inputMode="numeric"
                 className="input-field" 
-                placeholder="____" 
+                placeholder="_____" 
                 value={pin}
                 onChange={(e) => setPin(e.target.value.replace(/\D/g, ''))} // numbers only
                 style={{ fontSize: '1.5rem', textAlign: 'center', letterSpacing: '1rem' }}
